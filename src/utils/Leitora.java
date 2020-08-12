@@ -106,33 +106,246 @@ public class Leitora {
 	}
 	
 
-public static void escritorExtrato(String path, Usuario p, ContaBase c) throws IOException {
-    
-	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_");
-	Date data = new Date();
-	
-	path = path + simpleDateFormat.format(data) + p.getNome() + ".txt";
-	
+public static void escritorSaldo(String path, Usuario p, ContaBase c) throws IOException {
+	   
+SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_");
+Date data = new Date();
+
+path = path + simpleDateFormat.format(data) + p.getNome() + ".txt";
+
     BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
-    String linha = "**********Saldo**********";
-    buffWrite.append(linha + "\n");
-    
+    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    String linha = "**** COMPROVANTE DE TRANSAÇÃO BANCARIA - SALDO ****";
+    buffWrite.append(linha + "\n\n");
+
+    linha = "DATA HH: " + simpleDateFormat2.format(data);
+   
     if(p.getCategoria().equalsIgnoreCase(UsuarioEnum.CLIENTE.name())){
-        linha = ""+((Cliente)p).getAgencia();
-        buffWrite.append(linha + "\n");
-    }
-    if(p.getCategoria().equals(UsuarioEnum.GERENTE.name())){
-        ((Cliente)p).getAgencia();
-    }
-    
-    linha = "**********Fim do Saldo**********";
+    linha = "Cliente: "+((Cliente)p).getNome();
     buffWrite.append(linha + "\n");
-    
+    linha = "Agencia: "+((Cliente)p).getAgencia() + " - Numero da Conta :" + ((ContaBase)c).getNumeroConta() +" Conta: " +((ContaBase)c).getTipoDeConta();
+        buffWrite.append(linha + "\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n\n");
+        linha = "O Saldo da sua conta é: R$ "+((ContaBase)c).getSaldo();
+        buffWrite.append(linha + "\n\n");
+    }
+   
+    if(p.getCategoria().equals(UsuarioEnum.GERENTE.name())){
+    linha = "Cliente: "+((Gerente)p).getNome();
+    buffWrite.append(linha + "\n");
+    linha = "Agencia: "+((Gerente)p).getAgencia() + " - Numero da Conta :" + ((ContaBase)c).getNumeroConta() +" Conta: " +((ContaBase)c).getTipoDeConta();
+        buffWrite.append(linha + "\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n\n");
+        linha = "O Saldo da sua conta é: R$ "+((ContaBase)c).getSaldo();
+        buffWrite.append(linha + "\n\n");
+    }
+   
+    linha = "================ Fim do Comprovante =================";
+    buffWrite.append(linha + "\n");
+    linha = "======= OBRIGADO POR UTILIZAR NOSSOS SERVIÇOS========";
+    buffWrite.append(linha + "\n");
+    linha = "======== Pencent Bank Copyright © Copyright ® =======";
+    buffWrite.append(linha + "\n");
+   
     buffWrite.close();
 }
 
+public static void escritorSaque(String path, Usuario p, ContaBase c, double valor, double valortarifa) throws IOException {
+   
+SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_");
+Date data = new Date();
 
+path = path + simpleDateFormat.format(data) + p.getNome() + ".txt";
+
+    BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
+    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+   
+    String linha = "**** COMPROVANTE DE TRANSAÇÃO BANCARIA - SAQUE ****";
+    buffWrite.append(linha + "\n\n");
+
+    linha = "DATA HH: " + simpleDateFormat2.format(data);
+   
+    if(p.getCategoria().equalsIgnoreCase(UsuarioEnum.CLIENTE.name())){
+    linha = "Cliente: "+((Cliente)p).getNome();
+    buffWrite.append(linha + "\n");
+    linha = "Agencia: "+((Cliente)p).getAgencia() + " - Numero da Conta :" + ((ContaBase)c).getNumeroConta() +" Conta: " +((ContaBase)c).getTipoDeConta();
+        buffWrite.append(linha + "\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n");
+        linha = "Valor de saque realizado: R$ "+ valor;
+        buffWrite.append(linha + "\n\n");
+        linha = "O Saldo Atual da sua conta é: R$ "+((ContaBase)c).getSaldo();
+        buffWrite.append(linha + "\n\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n\n");
+        linha = "Tarifa desta operação foi R$: " + valortarifa;
+        buffWrite.append(linha + "\n\n");
+    }
+    if(p.getCategoria().equals(UsuarioEnum.GERENTE.name())){
+    linha = "Cliente: "+((Gerente)p).getNome();
+    buffWrite.append(linha + "\n");
+    linha = "Agencia: "+((Gerente)p).getAgencia() + " - Numero da Conta :" + ((ContaBase)c).getNumeroConta() +" Conta: " +((ContaBase)c).getTipoDeConta();
+        buffWrite.append(linha + "\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n\n");
+        linha = "Valor de saque realizado: R$ "+ valor;
+        buffWrite.append(linha + "\n\n");
+        linha = "O Saldo Atual da sua conta é: R$ "+((ContaBase)c).getSaldo();
+        buffWrite.append(linha + "\n\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n\n");
+        linha = "Tarifa desta operação foi R$: " + valortarifa;
+        buffWrite.append(linha + "\n\n");
+    }
+   
+    linha = "================ Fim do Comprovante =================";
+    buffWrite.append(linha + "\n");
+    linha = "======= OBRIGADO POR UTILIZAR NOSSOS SERVIÇOS========";
+    buffWrite.append(linha + "\n");
+    linha = "======== Pencent Bank Copyright © Copyright ® =======";
+    buffWrite.append(linha + "\n");
+   
+    buffWrite.close();
 }
+
+public static void escritorDeposito(String path, Usuario p, ContaBase c, double valor,double valortarifa) throws IOException {
+   
+SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_");
+Date data = new Date();
+
+path = path + simpleDateFormat.format(data) + p.getNome() + ".txt";
+
+    BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
+    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+   
+    String linha = "** COMPROVANTE DE TRANSAÇÃO BANCARIA - DEPOSITO **";
+    buffWrite.append(linha + "\n\n");
+
+    linha = "DATA HH: " + simpleDateFormat2.format(data);
+   
+    if(p.getCategoria().equalsIgnoreCase(UsuarioEnum.CLIENTE.name())){
+    linha = "Cliente: "+((Cliente)p).getNome();
+    buffWrite.append(linha + "\n");
+    linha = "Agencia: "+((Cliente)p).getAgencia() + " - Numero da Conta :" + ((ContaBase)c).getNumeroConta() +" Conta: " +((ContaBase)c).getTipoDeConta();
+        buffWrite.append(linha + "\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n\n");
+        linha = "Valor depositado foi de: R$ "+ valor;
+        buffWrite.append(linha + "\n\n");
+        linha = "O Saldo Atual da sua conta é: R$ "+((ContaBase)c).getSaldo();
+        buffWrite.append(linha + "\n\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n\n");
+        linha = "Tarifa desta operação foi R$: " + valortarifa;
+        buffWrite.append(linha + "\n\n");
+    }
+    if(p.getCategoria().equals(UsuarioEnum.GERENTE.name())){
+    linha = "Cliente: "+((Gerente)p).getNome();
+    buffWrite.append(linha + "\n");
+    linha = "Agencia: "+((Gerente)p).getAgencia() + " - Numero da Conta :" + ((ContaBase)c).getNumeroConta() +" Conta: " +((ContaBase)c).getTipoDeConta();
+        buffWrite.append(linha + "\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n\n");
+        linha = "Valor depositado foi de: R$ "+ valor;
+        buffWrite.append(linha + "\n\n");
+        linha = "O Saldo Atual da sua conta é: R$ "+((ContaBase)c).getSaldo();
+        buffWrite.append(linha + "\n\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n\n");
+        linha = "Tarifa desta operação foi R$: " + valortarifa;
+        buffWrite.append(linha + "\n\n");
+    }
+   
+    linha = "================ Fim do Comprovante =================";
+    buffWrite.append(linha + "\n");
+    linha = "======= OBRIGADO POR UTILIZAR NOSSOS SERVIÇOS========";
+    buffWrite.append(linha + "\n");
+    linha = "======== Pencent Bank Copyright © Copyright ® =======";
+    buffWrite.append(linha + "\n");
+   
+    buffWrite.close();
+}
+
+public static void escritorTransferencia(String path, Usuario p, ContaBase c, ContaBase cb1, String nomedestino, int numeroconta ,double valor, double valortarifa) throws IOException {
+   
+SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss_");
+Date data = new Date();
+
+path = path + simpleDateFormat.format(data) + p.getNome() + ".txt";
+
+    BufferedWriter buffWrite = new BufferedWriter(new FileWriter(path));
+    SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+   
+    String linha = "** COMPROVANTE DE TRANSAÇÃO BANCARIA - TRANSFERENCIA **";
+    buffWrite.append(linha + "\n\n");
+
+    linha = "DATA HH: " + simpleDateFormat2.format(data);
+   
+    if(p.getCategoria().equalsIgnoreCase(UsuarioEnum.CLIENTE.name())){
+    linha = "Cliente: "+((Cliente)p).getNome();
+    buffWrite.append(linha + "\n");
+    linha = "Agencia: "+((Cliente)p).getAgencia() + " - Numero da Conta :" + ((ContaBase)c).getNumeroConta() +" Conta: " +((ContaBase)c).getTipoDeConta();
+        buffWrite.append(linha + "\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n");
+        linha="================Tranferido para:====================";
+        buffWrite.append(linha + "\n\n");
+        linha = "Valor Total Transferido R$: "+ valor;
+        buffWrite.append(linha + "\n");
+        linha = "Conta Destino: "+ numeroconta;
+        buffWrite.append(linha + "\n");
+        linha = "Cliente: " + nomedestino + " CPF: " + ((ContaBase)cb1).getCpf();
+        buffWrite.append(linha + "\n\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n\n");
+        linha = "O Saldo atual da sua conta R$ "+((ContaBase)c).getSaldo();
+        buffWrite.append(linha + "\n\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n\n");
+        linha = "Tarifa desta operação foi R$: " + valortarifa;
+        buffWrite.append(linha + "\n\n");
+    }
+    if(p.getCategoria().equals(UsuarioEnum.GERENTE.name())){
+    linha = "Cliente: "+((Gerente)p).getNome();
+    buffWrite.append(linha + "\n");
+    linha = "Agencia: "+((Gerente)p).getAgencia() + " - Numero da Conta :" + ((ContaBase)c).getNumeroConta() +" Conta: " +((ContaBase)c).getTipoDeConta();
+        buffWrite.append(linha + "\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n");
+        linha="================Tranferido para:====================";
+        buffWrite.append(linha + "\n\n");
+        linha = "Valor Total Transferido R$: "+ valor;
+        buffWrite.append(linha + "\n");
+        linha = "Conta Destino: "+ numeroconta;
+        buffWrite.append(linha + "\n");
+        linha = "Cliente: " + nomedestino + " CPF: " + ((ContaBase)cb1).getCpf();
+        buffWrite.append(linha + "\n\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n\n");
+        linha = "O Saldo atual da sua conta R$ "+((ContaBase)c).getSaldo();
+        buffWrite.append(linha + "\n\n");
+        linha="====================================================";
+        buffWrite.append(linha + "\n\n");
+        linha = "Tarifa desta operação foi R$: " + valortarifa;
+        buffWrite.append(linha + "\n\n");
+    }
+   
+    linha = "================ Fim do Comprovante =================";
+    buffWrite.append(linha + "\n");
+    linha = "======= OBRIGADO POR UTILIZAR NOSSOS SERVIÇOS========";
+    buffWrite.append(linha + "\n");
+    linha = "======== Pencent Bank Copyright © Copyright ® =======";
+    buffWrite.append(linha + "\n");
+   
+    buffWrite.close();
+}
+}
+
+
+
+
 	
 	
 	

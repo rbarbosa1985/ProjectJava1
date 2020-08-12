@@ -1,5 +1,7 @@
 package conta;
 
+import utils.Leitora;
+
 public abstract class ContaBase {
 		
 	static final int banco = 0401;
@@ -67,9 +69,10 @@ public abstract class ContaBase {
 		} else {
 			double novoSaldo = this.saldo - valor;
 			this.saldo = novoSaldo;
-			System.out.println("\nSaque realizado com sucesso!");
 			return true;
+			
 		}
+		
 	}
 	public boolean transfere(ContaBase destino, double valor) throws InterruptedException 
 	{

@@ -34,7 +34,6 @@ public class ContaCorrente extends ContaBase {
 		} else {
 			double novoSaldo = super.getSaldo() - valor - 0.10;
 			super.setSaldo(novoSaldo);
-			System.out.println("\nSaque realizado com sucesso!");
 			return true;
 		}
 	}

@@ -20,12 +20,12 @@ public class Diretor extends Funcionario {
 	}
 	
 	public void consultaContas() throws IOException {	
-	    List<Usuario> usuarios = new ArrayList<>();
-		
+	    //Criando a Lista de Usuarios
+		List<Usuario> usuarios = new ArrayList<>();
+	    
 		//Atribuo os valores do arquivo na minha lista.
 		usuarios = Leitora.leitor();
-		
-		
+	
 		Collections.sort(usuarios);
 		
 		for (Usuario user : usuarios)
@@ -33,10 +33,6 @@ public class Diretor extends Funcionario {
 			System.out.println("Nome do Cliente: " + user.getNome() + " CPF: " + user.getCpf() + " Numero da Conta: " + user.getAgencia());
 		}
 	}
-	
-	
-	
-	// implementar relatorio Nome, CPF e Agencia de todos os clientes do sistema. Em ordem alfabetica.
 	
 }
 	
