@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import conta.ContaBase;
+import pessoal.Diretor;
+import pessoal.Gerente;
+import pessoal.Presidente;
 import pessoal.Usuario;
 
 
@@ -13,10 +16,20 @@ public class Menu {
  	
 	public static void cabecalho() 
 	{
-		System.out.println(":::::::::::::::::::::::::::::::: BANK PENCET ::::::::::::::::::::::::::::::::::::::::::::::::: \n\n");
+		//System.out.println(":::::::::::::::::::::::::::::::: BANK PENCET ::::::::::::::::::::::::::::::::::::::::::::::::: \n\n");
+		 System.out.println("######################################################################################################################################");
+		 System.out.println("8888888b.  8888888888 888b    888  .d8888b.  8888888888 888b    888 88888888888       888888b.          d8888 888b    888 888    d8P  ");
+		 System.out.println("888   Y88b 888        8888b   888 d88P  Y88b 888        8888b   888     888           888   88b        d88888 8888b   888 888   d8P   ");
+		 System.out.println("888    888 888        88888b  888 888    888 888        88888b  888     888           888  .88P       d88P888 88888b  888 888  d8P    ");
+		 System.out.println("888   d88P 8888888    888Y88b 888 888        8888888    888Y88b 888     888           8888888K.      d88P 888 888Y88b 888 888d88K     ");
+		 System.out.println("8888888P   888        888 Y88b888 888        888        888 Y88b888     888           888   Y88b    d88P  888 888 Y88b888 8888888b    ");
+		 System.out.println("888        888        888  Y88888 888    888 888        888  Y88888     888           888    888   d88P   888 888  Y88888 888  Y88b   ");
+		 System.out.println("888        888        888   Y8888 Y88b  d88P 888        888   Y8888     888           888   d88P  d8888888888 888   Y8888 888   Y88b  ");
+		 System.out.println("888        8888888888 888    Y888   Y8888P   8888888888 888    Y888     888           8888888P   d88P     888 888    Y888 888    Y88b ");
+		 System.out.println("######################################################################################################################################\n\n");
 	}
 	
-	public static void menuBancario(Usuario user) throws IOException 
+	public static void menuBancario(Usuario user) throws IOException, InterruptedException 
 	{
 		ContaBase cc;
 		ContaBase cc1;
@@ -27,9 +40,10 @@ public class Menu {
 		cc = ValidaConta.validaConta(user.getCpf());
 		
 		
-		while (opcao != '6')
+		while (opcao != '7')
 		{
-			System.out.println("\n\n:::::::::::::::::::::::: MENU DE MOVIMENTAÇOES BANCARIAS :::::::::::::::::::::::::::::::::::: \n\n");
+			cabecalho();
+			System.out.println(":::::::::::::::::::::::::::::::::::::::::::: MENU DE MOVIMENTAÇOES BANCARIAS ::::::::::::::::::::::::::::::::::::::::::::::::::::::::: \n\n");
 			System.out.println("0 - Saldo");
 			System.out.println("1 - Saque");
 			System.out.println("2 - Deposito");
@@ -43,27 +57,29 @@ public class Menu {
 			if (opcao == '0')
 			{
 				System.out.printf("\nSeu Saldo atual é: R$ %.2f\n", cc.getSaldo());
+				limpaMenu();
 			}
 			if (opcao == '1')
 			{
 				double valor;
-				System.out.print("Digite o valor que deseja sacar: ");
+				System.out.print("\nDigite o valor que deseja sacar: R$ ");
 				valor = sc.nextDouble();
 				if (cc.sacar(valor))
 				{
 					valortarifa += 0.1;
 				}
-				
 				Leitora.escritorExtrato(path, user, cc);
+				limpaMenu();
 			}
 			if (opcao == '2')
 			{
 				double valor;
-				System.out.print("Digite o valor que deseja depositar: ");
+				System.out.print("\nDigite o valor que deseja depositar: R$ ");
 				valor = sc.nextDouble();
 				cc.depositar(valor);
 				valortarifa += 0.1;
 				Leitora.escritorExtrato(path, user, cc);
+				limpaMenu();
 			}
 			if (opcao == '3')
 			{
@@ -72,13 +88,14 @@ public class Menu {
 				int numeroconta = 0;
 				
 				
-				System.out.print("Digite o numero da conta destino: ");
+				System.out.print("\nDigite o numero da conta destino: ");
 				numeroconta = sc.nextInt();
-				System.out.print("Digite o cpf do Titular da conta destino: ");
+				System.out.print("\nDigite o cpf do Titular da conta destino: ");
 				sc.nextLine();
 				String cpf = sc.nextLine();
-				cc1 = ValidaConta.validaConta(cpf);			
-				System.out.print("Digite o valor que deseja transferir: ");
+				cc1 = ValidaConta.validaConta(cpf);	
+				
+				System.out.print("\nDigite o valor que deseja transferir: R$ ");
 				valor = sc.nextDouble();
 				if ((numeroconta == cc1.getNumeroConta()) && (cpf.equalsIgnoreCase(cc1.getCpf())))
 				{
@@ -87,20 +104,26 @@ public class Menu {
 						valortarifa += 0.2;
 					}
 					Leitora.escritorExtrato(path, user, cc);
+					limpaMenu();
 				}
 				else
-					System.out.println("Dados incorretos!");
+				{
+					System.out.println("\nDados incorretos!");
+					limpaMenu();
+				}
 				
 			}
 			if (opcao == '4')
 			{
 				if (cc.getTipoDeConta().equalsIgnoreCase("Poupanca"))
 				{
-					System.out.print("Você não possuí uma Conta Corrente.");
+					System.out.print("\nVocê não possuí uma Conta Corrente.");
+					limpaMenu();
 				}
 				else 
 				{
-					System.out.printf("Você gastou em tarifas nesta seção: R$ %.2f", valortarifa);
+					System.out.printf("\nVocê gastou em tarifas nesta seção: R$ %.2f", valortarifa);
+					limpaMenu();
 				}
 				
 			}
@@ -111,17 +134,18 @@ public class Menu {
 				
 				if (cc.getTipoDeConta().equalsIgnoreCase("Corrente"))
 				{
-					System.out.print("Você não possuí uma Conta Poupança.");
+					System.out.print("\nVocê não possuí uma Conta Poupança.");
+					limpaMenu();
 				}
 				else 
 				{
-					System.out.print("Digite o Valor que pretende simular: ");
+					System.out.print("\nDigite o Valor que pretende simular: ");
 					valor = sc.nextDouble();
-					System.out.print("Digite a quantidade de dias que pretende simular: ");
+					System.out.print("\nDigite a quantidade de dias que pretende simular: ");
 					dias = sc.nextInt();
 					valor = (valor * ((0.10/30)*dias));
-					System.out.printf("O valor total do rendimento é: R$ %.2f ", valor);
-					
+					System.out.printf("\nO valor total do rendimento é: R$ %.2f ", valor);
+					limpaMenu();
 				}
 				
 				
@@ -129,36 +153,45 @@ public class Menu {
 			}
 			if (opcao == '6')
 			{
-				System.out.println("Efetuando o Logout!");
+				System.out.println("\nEfetuando o Logout!");
+				limpaMenu();
 				ValidaUsuario.validaUsuario();
 			}
 			if (opcao == '7')
 			{
-				System.out.println("Saindo do Sistema!");
+				System.out.println("\nSaindo do Sistema!");
+				limpaMenu();
 			}
 	}
 }
 	
-	public static void menuGerente()
-	{
+	public static void menuGerente(Usuario user) throws IOException, InterruptedException
+	{	
 		System.out.println(":::::::::::::::::::::::::::::::: MENU GERENTE ::::::::::::::::::::::::::::::::::::::::::::::::::: \n\n");
 		System.out.println("0 - Imprimir o relatorio Numero de Contas da Agencia: ");
 		System.out.println("1 - Desconectar-se");
 		System.out.println("2 - Fechar Programa");
 		System.out.print("Digite uma opção de acordo com o indice: ");
 		char opcao = sc.next().charAt(0);
-
+			
+		if (opcao == '0')
+		{
+			System.out.println("Quantidade de contas na sua Agencia é: " + ((Gerente)user).qtdContas());
+			limpaMenu();
+		}
 		if (opcao == '1')
 		{
-			System.out.print("Efetuando Logout");
+			System.out.print("\nEfetuando Logout");
+			limpaMenu();
 		}
 		if (opcao == '2')
 		{
-			System.out.print("Saindo do Sistema.");
+			System.out.print("\nSaindo do Sistema.");
+			limpaMenu();
 		}
 	}
 	
-	public static void menuDiretor()
+	public static void menuDiretor(Usuario user) throws IOException, InterruptedException
 	{
 		System.out.println(":::::::::::::::::::::::::::::::: MENU DIRETOR :::::::::::::::::::::::::::::::::::::::::::::::::: \n\n");
 		System.out.println("0 - Imprimir o relatorio Nome, CPF e Agencia de todos os Cliente: ");
@@ -166,18 +199,27 @@ public class Menu {
 		System.out.println("2 - Fechar Programa");
 		System.out.print("Digite uma opção de acordo com o indice: ");
 		char opcao = sc.next().charAt(0);
-
+		
+		if (opcao == '0')
+		{
+			System.out.println("Segue abaixo o Relatorio com os clientes:");
+			((Diretor)user).consultaContas();
+			limpaMenu();
+		}
+		
 		if (opcao == '1')
 		{
-			System.out.print("Efetuando Logout");
+			System.out.print("\nEfetuando Logout");
+			limpaMenu();
 		}
 		if (opcao == '2')
 		{
-			System.out.print("Saindo do Sistema.");
+			System.out.print("\nSaindo do Sistema.");
+			limpaMenu();
 		}
 	}
 	
-	public static void menuPresidente()
+	public static void menuPresidente(Usuario user) throws IOException, InterruptedException
 	{
 		System.out.println(":::::::::::::::::::::::::::::: MENU PRESIDENTE ::::::::::::::::::::::::::::::::::::::::::::::: \n\n");
 		System.out.println("0 - Imprimir o relatório Valor Total Capital no Banco: ");
@@ -185,18 +227,30 @@ public class Menu {
 		System.out.println("2 - Fechar Programa");
 		System.out.print("Digite uma opção de acordo com o indice: ");
 		char opcao = sc.next().charAt(0);
-
+		
+		if (opcao == '0')
+		{
+			System.out.println("Quantidade de contas na sua Agencia é: " + ((Presidente)user).capital());
+			limpaMenu();
+		}
 		if (opcao == '1')
 		{
-			System.out.print("Efetuando Logout");
+			limpaMenu();
 		}
 		if (opcao == '2')
 		{
-			System.out.print("Saindo do Sistema.");
+			limpaMenu();
 		}
 	}
 	
-	public static void menuNivelAcesso(Usuario user) throws IOException
+	public static void limpaMenu() throws IOException, InterruptedException {
+		//System.out.printf("\nPressione enter para conitnuar...");
+		//System.in.read();
+		Thread.sleep(2000);
+		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	}
+	
+	public static void menuNivelAcesso(Usuario user) throws IOException, InterruptedException
 	{
 		System.out.println("::::::::::::::::::::::::::: MENU DE NIVEL DE ACESSO - " + user.getCategoria().toUpperCase() + " :::::::::::::::::::::::::::::::::::: \n\n");
 		System.out.println("0 - Acesso Conta Pessoal");
@@ -213,28 +267,31 @@ public class Menu {
 		{
 			if (user.getCategoria().equals("Gerente"))
 			{
-				menuGerente();
+				menuGerente(user);
 			}
 			if (user.getCategoria().equals("Diretor"))
 			{
-				menuDiretor();
+				menuDiretor(user);
 			}
 			if (user.getCategoria().equals("Presidente"))
 			{
-				menuPresidente();
+				menuPresidente(user);
 			}
 		}
 		if (opcao == '2')
 		{
-			System.out.print("Efetuando Logout");
+			System.out.print("\nEfetuando Logout");
+			limpaMenu();
 		}
 		else if (opcao == '3')
 		{
-			System.out.print("Saindo do Sistema.");
+			System.out.print("\nSaindo do Sistema.");
+			limpaMenu();
 		}
 		else
 		{
-			System.out.print("Opção digitada incorreta, Saindo do Sistema.");
+			System.out.print("\nOpção digitada incorreta, Saindo do Sistema.");
+			limpaMenu();
 		}
 	}
 	

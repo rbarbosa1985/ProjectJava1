@@ -7,11 +7,10 @@ public class ContaCorrente extends ContaBase {
 	public ContaCorrente() {
 		super();
 		qtdContas ++;
-	};
-		
-	public ContaCorrente(String cpf, double saldo, int numeroConta, String tipoDeConta, double limite) {
-		super(cpf, saldo, numeroConta, tipoDeConta);
-		qtdContas ++;
+	};	  
+
+	public ContaCorrente(int agencia, String cpf, double saldo, int numeroConta, String tipoDeConta, double limite) {
+		super(agencia, cpf, saldo, numeroConta, tipoDeConta);
 		this.limite = limite;
 	}
 
@@ -28,27 +27,28 @@ public class ContaCorrente extends ContaBase {
 	}
 
 	@Override
-	public boolean sacar(double valor) {
+	public boolean sacar(double valor) throws InterruptedException {
 		if ( super.getSaldo() < valor + 0.10) {
-			System.out.println("Saldo insuficiente para efetuar o saque!");
+			System.out.println("\nSaldo insuficiente para efetuar o saque!");
 			return false;
 		} else {
 			double novoSaldo = super.getSaldo() - valor - 0.10;
 			super.setSaldo(novoSaldo);
-			System.out.println("Transferencia realizada com sucesso!");
+			System.out.println("\nSaque realizado com sucesso!");
 			return true;
 		}
 	}
 	@Override
-	public boolean transfere(ContaBase destino, double valor) {
-		boolean retirou = this.sacar(valor + 0.20);
+	public boolean transfere(ContaBase destino, double valor) throws InterruptedException {
+		boolean retirou = this.sacar(valor + 0.10);
 		
 		if (retirou == false) {
-			System.out.println("Saldo insuficiente para efetuar a transferencia!");
+			System.out.println("\nSaldo insuficiente para efetuar a transferencia!");
 			return false;
 		}
 		else {
 			destino.depositar(valor);
+			System.out.println("\nTransferencia realizada com sucesso!");
 			return true;
 		}
 	}
@@ -60,10 +60,6 @@ public class ContaCorrente extends ContaBase {
 	@Override
 	public void depositarDeTransferencia(double valor) {
 		super.setSaldo(super.getSaldo() + valor);
-		
-	}
-	
-	public void relatorioTarifa() {
 		
 	}
 }

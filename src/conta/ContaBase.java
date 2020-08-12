@@ -2,7 +2,8 @@ package conta;
 
 public abstract class ContaBase {
 		
-	static final int agencia = 0401;
+	static final int banco = 0401;
+	private int agencia;
 	private String cpf;
 	private double saldo;
 	private int numeroConta;
@@ -10,15 +11,22 @@ public abstract class ContaBase {
 
 	public ContaBase() {}
 	
-	public ContaBase(String cpf, double saldo, int numeroConta, String tipoDeConta) {
+	public ContaBase(int agencia, String cpf, double saldo, int numeroConta, String tipoDeConta) {
+		this.agencia = agencia;
 		this.cpf = cpf;
 		this.saldo = saldo;
 		this.numeroConta = numeroConta;
 		this.tipoDeConta = tipoDeConta;
 	}
 
-	
-	
+	public int getAgencia() {
+		return agencia;
+	}
+
+	public void setAgencia(int agencia) {
+		this.agencia = agencia;
+	}
+
 	public String getCpf() {
 		return cpf;
 	}
@@ -51,28 +59,29 @@ public abstract class ContaBase {
 		this.tipoDeConta = tipoDeConta;
 	}
 
-	public boolean sacar(double valor) 
+	public boolean sacar(double valor) throws InterruptedException 
 	{
 		if (this.saldo < valor) {
-			System.out.println("Saldo insuficiente para efetuar o saque!");
+			System.out.println("\nSaldo insuficiente para efetuar o saque!");
 			return false;
 		} else {
 			double novoSaldo = this.saldo - valor;
 			this.saldo = novoSaldo;
-			System.out.println("Transferencia realizada com sucesso!");
+			System.out.println("\nSaque realizado com sucesso!");
 			return true;
 		}
 	}
-	public boolean transfere(ContaBase destino, double valor) 
+	public boolean transfere(ContaBase destino, double valor) throws InterruptedException 
 	{
 		boolean retirou = this.sacar(valor);
 		
 		if (retirou == false) {
-			System.out.println("Saldo insuficiente para efetuar a transferencia!");
+			System.out.println("\nSaldo insuficiente para efetuar a transferencia!");
 			return false;
 		}
 		else {
 			destino.depositar(valor);
+			System.out.println("\nTransferencia realizada com sucesso!");
 			return true;
 		}
 	}

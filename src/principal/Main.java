@@ -10,7 +10,6 @@ public class Main {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 			
-		Menu.cabecalho();
 		ValidaUsuario log = new ValidaUsuario();
 		
 		log.validaUsuario();

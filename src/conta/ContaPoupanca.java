@@ -24,13 +24,11 @@ public class ContaPoupanca extends ContaBase {
 		qtdContas ++;
 	}
 	
-	public ContaPoupanca(String cpf, double saldo, int numeroConta, String tipoDeConta, double rendimento) 
-	{
-		super(cpf, saldo, numeroConta, tipoDeConta);
+	public ContaPoupanca(int agencia, String cpf, double saldo, int numeroConta, String tipoDeConta, double rendimento) {
+		super(agencia, cpf, saldo, numeroConta, tipoDeConta);
 		this.rendimento = rendimento;
-		qtdContas ++;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "ContaPoupanca [rendimento=" + rendimento + ", getRendimento()=" + getRendimento() + ", getCpf()="

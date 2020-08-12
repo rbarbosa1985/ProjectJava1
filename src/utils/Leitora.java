@@ -28,7 +28,7 @@ public class Leitora {
 
 	public static List<Usuario> leitor() throws IOException {
 
-		BufferedReader buffRead = new BufferedReader(new FileReader("C:\\Projetos\\springtool\\Pencet\\src\\usuario_teste.txt"));
+		BufferedReader buffRead = new BufferedReader(new FileReader("./usuarios.txt"));
 		List<Usuario> lista = new ArrayList<>();
 		String linha = "";
 		while (true) {
@@ -67,7 +67,7 @@ public class Leitora {
 	
 	public static List<ContaBase> leitorConta() throws IOException {
 
-		BufferedReader buffRead = new BufferedReader(new FileReader("C:\\Projetos\\springtool\\Pencet\\contas.txt"));
+		BufferedReader buffRead = new BufferedReader(new FileReader("./contas.txt"));
 		List<ContaBase> lista = new ArrayList<>();
 		String linha = "";
 		while (true) {
@@ -77,13 +77,13 @@ public class Leitora {
 			if (linha != null) {
 				String[] split = linha.split(";");
 
-				if (split[3].equalsIgnoreCase(ContaEnum.CORRENTE.name())) {
-					ContaBase = new ContaCorrente(split[0], Double.parseDouble(split[1]), Integer.parseInt(split[2]), split[3],Double.parseDouble(split[4]));
+				if (split[4].equalsIgnoreCase(ContaEnum.CORRENTE.name())) {
+					ContaBase = new ContaCorrente(Integer.parseInt(split[0]), split[1], Double.parseDouble(split[2]), Integer.parseInt(split[3]), split[4],Double.parseDouble(split[5]));
 					lista.add(ContaBase);
 				}
 				
-				else if (split[3].equalsIgnoreCase(ContaEnum.POUPANCA.name())) {
-					ContaBase = new ContaPoupanca(split[0], Double.parseDouble(split[1]), Integer.parseInt(split[2]), split[3], Double.parseDouble(split[4]));
+				else if (split[4].equalsIgnoreCase(ContaEnum.POUPANCA.name())) {
+					ContaBase = new ContaPoupanca(Integer.parseInt(split[0]), split[1], Double.parseDouble(split[2]), Integer.parseInt(split[3]), split[4], Double.parseDouble(split[5]));
 					lista.add(ContaBase);
 				}
 				} else

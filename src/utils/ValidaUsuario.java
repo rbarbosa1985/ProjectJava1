@@ -14,7 +14,7 @@ import utils.Menu;
 
 public class ValidaUsuario {
 	
-public static void validaUsuario() throws ArithmeticException, IOException {
+public static void validaUsuario() throws ArithmeticException, IOException, InterruptedException {
 	
 	 	Scanner sc = new Scanner(System.in);
 	 	Usuario login;
@@ -25,11 +25,14 @@ public static void validaUsuario() throws ArithmeticException, IOException {
 		//Atribuo os valores do arquivo na minha lista.
 		usuarios = Leitora.leitor();
 		
+		Menu.cabecalho();
 		
-		System.out.print("Digite CPF do usuário:");
+		System.out.println("Por favor digite suas credencias para acessar o sistema! ");
+		
+		System.out.print("\nDigite CPF do usuário: ");
 		String cpf = sc.nextLine();
 		
-		System.out.print("Digite sua senha:");
+		System.out.print("Digite sua senha: ");
 		String senha = sc.nextLine();
 		
 		//identificando o usuário

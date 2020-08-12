@@ -1,5 +1,13 @@
 package pessoal;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import conta.ContaBase;
+import utils.Leitora;
+import utils.Menu;
+
 public class Gerente extends Funcionario {
 	private int agenciaGestao;
 	
@@ -25,5 +33,25 @@ public class Gerente extends Funcionario {
 		this.agenciaGestao = agenciaGestao;
 	}
  
-
+	//Quantidade de contas na agencia
+	public int qtdContas() throws IOException 
+	{
+		int count = 0;
+		
+	    //Lista de Contas
+	    List<ContaBase> contas = new ArrayList<>();
+	    		
+		//Atribuo os valores do arquivo na minha lista.
+		contas = Leitora.leitorConta();
+		
+		for (ContaBase conta : contas) {
+			
+			if (this.getAgenciaGestao() == conta.getAgencia())
+			{
+				count++;
+			}
+		}	
+		
+		return count;
+	}
 }

@@ -1,6 +1,6 @@
 package pessoal;
 
-public abstract class Usuario {
+public abstract class Usuario implements Comparable<Usuario> {
 
 	private String agencia;
 	private String nome;
@@ -78,5 +78,8 @@ public abstract class Usuario {
 				+ ", senha=" + senha + "]";
 	}
 
+	public int compareTo(Usuario user) {
+		return nome.toUpperCase().compareTo(user.getNome().toUpperCase());	
+	}
 
 }
