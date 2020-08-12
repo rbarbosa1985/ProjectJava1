@@ -41,6 +41,8 @@ public static void validaUsuario() throws ArithmeticException, IOException, Inte
 			System.out.print("Digite sua senha: ");
 			String senha = sc.nextLine();
 			
+			Menu.limpaMenu();
+			
 			//identificando o usuário
 			for (Usuario usuario : usuarios) {
 				

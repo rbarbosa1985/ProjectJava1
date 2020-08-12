@@ -187,7 +187,7 @@ public class Menu {
 			}
 			else
 			{
-				System.out.println("Opção incorreta!265432636546");
+				System.out.println("Opção incorreta!");
 			}
 	}
 }
@@ -209,7 +209,8 @@ public class Menu {
 			{			
 				System.out.println("Quantidade de contas na sua Agencia é: " + ((Gerente)user).qtdContas());
 				System.out.println("\nDigite o Enter para continuar... ");
-				sc.next();
+				sc.nextLine();
+				sc.nextLine();
 			}
 			else if (opcao == '1')
 			{
@@ -222,7 +223,7 @@ public class Menu {
 				Thread.sleep(1000);
 			}
 			else
-				System.out.println("Opção Incorreta!1");
+				System.out.println("Opção Incorreta!");
 		}
 	}
 	
@@ -244,7 +245,7 @@ public class Menu {
 				System.out.println("Segue abaixo o Relatorio com os clientes:");
 				((Diretor)user).consultaContas();
 				System.out.println("\nDigite o Enter para continuar... ");
-				sc.next();
+				String pausa = sc.nextLine();
 			}
 			
 			else if (opcao == '1')
@@ -258,7 +259,7 @@ public class Menu {
 				Thread.sleep(1000);
 			}
 			else 
-				System.out.println("Opção Incorreta!2");
+				System.out.println("Opção Incorreta!");
 		}
 	}
 	
@@ -278,6 +279,8 @@ public class Menu {
 			if (opcao == '0')
 			{
 				System.out.println("Quantidade de contas na sua Agencia é: " + ((Presidente)user).capital());
+				System.out.println("\nDigite o Enter para continuar... ");
+				String pausa = sc.nextLine();
 				limpaMenu();
 			}
 			else if (opcao == '1')
@@ -291,13 +294,17 @@ public class Menu {
 				Thread.sleep(1000);
 			}
 			else 
-				System.out.println("Opção Incorreta!3");
+				System.out.println("Opção Incorreta!");
 		}
 	}
 	
 	public static void limpaMenu() throws IOException, InterruptedException {
 		Thread.sleep(2000);
 		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        if (System.getProperty("os.name").contains("Windows"))
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        else
+            Runtime.getRuntime().exec("clear");
 	}
 	
 	public static void menuNivelAcesso(Usuario user) throws IOException, InterruptedException
