@@ -107,27 +107,38 @@ public class Menu {
 				System.out.print("\nDigite o cpf do Titular da conta destino: ");
 				sc.nextLine();
 				String cpf = sc.nextLine();
-				System.out.print("\nDigite o nome do Titular da conta destino: ");
-				String nomedestino = sc.nextLine();
 				cc1 = ValidaConta.validaConta(cpf);	
-				
+				Usuario user1 = FindUser.find(cpf);
 				System.out.print("\nDigite o valor que deseja transferir: R$ ");
 				valor = sc.nextDouble();
+				
 				if ((numeroconta == cc1.getNumeroConta()) && (cpf.equalsIgnoreCase(cc1.getCpf())))
 				{
-					if (cc.transfere(cc1, valor))
+					System.out.println("\nDados do Favorecido:");
+					System.out.println("Nome: " + user1.getNome() + " CPF: " + user1.getCpf() + " Numero da Conta: " + cc1.getNumeroConta());
+					System.out.print("\nConfirma os dados da conta destino (s/n)? ");
+					char confirma = sc.next().charAt(0);
+					if (confirma == 's')
 					{
-						valortarifa += 0.2;
-					}
-					if (cc.getTipoDeConta().equalsIgnoreCase("Poupanca"))
-					{
-						Leitora.escritorTransferencia(path, user, cc, cc1, nomedestino, numeroconta, valor, 0);
+						if (cc.transfere(cc1, valor))
+						{
+							valortarifa += 0.2;
+						}
+						if (cc.getTipoDeConta().equalsIgnoreCase("Poupanca"))
+						{
+							Leitora.escritorTransferencia(path, user, cc, cc1, user1.getNome(), numeroconta, valor, 0);
+						}
+						else
+						{
+							Leitora.escritorTransferencia(path, user, cc, cc1, user1.getNome(), numeroconta, valor, 0.2);
+						}
+						limpaMenu();
 					}
 					else
 					{
-						Leitora.escritorTransferencia(path, user, cc, cc1, nomedestino, numeroconta, valor, 0.2);
+						System.out.println("\nDados incorretos!");
+						limpaMenu();
 					}
-					limpaMenu();
 				}
 				else
 				{
@@ -211,6 +222,7 @@ public class Menu {
 				System.out.println("\nDigite o Enter para continuar... ");
 				sc.nextLine();
 				sc.nextLine();
+				limpaMenu();
 			}
 			else if (opcao == '1')
 			{
@@ -223,7 +235,10 @@ public class Menu {
 				Thread.sleep(1000);
 			}
 			else
+			{
 				System.out.println("Opção Incorreta!");
+				limpaMenu();
+			}
 		}
 	}
 	
@@ -246,6 +261,7 @@ public class Menu {
 				((Diretor)user).consultaContas();
 				System.out.println("\nDigite o Enter para continuar... ");
 				String pausa = sc.nextLine();
+				limpaMenu();
 			}
 			
 			else if (opcao == '1')
@@ -257,9 +273,13 @@ public class Menu {
 			else if (opcao == '2')
 			{
 				Thread.sleep(1000);
+				limpaMenu();
 			}
-			else 
+			else
+			{
 				System.out.println("Opção Incorreta!");
+				limpaMenu();
+			}
 		}
 	}
 	
@@ -293,8 +313,11 @@ public class Menu {
 			{
 				Thread.sleep(1000);
 			}
-			else 
+			else
+			{
 				System.out.println("Opção Incorreta!");
+				limpaMenu();
+			}
 		}
 	}
 	
@@ -310,7 +333,8 @@ public class Menu {
 	public static void menuNivelAcesso(Usuario user) throws IOException, InterruptedException
 	{
 		char opcao = '9';
-		while (opcao != '3')
+		boolean teste = true;
+		while (teste)
 		{
 			cabecalho();
 			System.out.println("::::::::::::::::::::::::::::::::::::::::::: MENU DE NIVEL DE ACESSO - " + user.getCategoria().toUpperCase() + " :::::::::::::::::::::::::::::::::::: \n\n");
@@ -323,34 +347,42 @@ public class Menu {
 			if (opcao == '0')
 			{
 				menuBancario(user);
+				teste = false;
+				limpaMenu();
 			}
 			else if (opcao == '1')
 			{
 				if (user.getCategoria().equals("Gerente"))
 				{
 					menuGerente(user);
-					break;
+					teste = false;
+					limpaMenu();
 				}
 				if (user.getCategoria().equals("Diretor"))
 				{
 					menuDiretor(user);
-					break;
+					teste = false;
+					limpaMenu();
 				}
 				if (user.getCategoria().equals("Presidente"))
 				{
 					menuPresidente(user);
-					break;
+					teste = false;
+					limpaMenu();
 				}
 			}
-			if (opcao == '2')
+			else if (opcao == '2')
 			{
 				System.out.print("\nEfetuando Logout");
+				ValidaUsuario.validaUsuario();
 				limpaMenu();
+				teste = false;
 			}
 			else if (opcao == '3')
 			{
 				System.out.print("\nSaindo do Sistema.");
 				limpaMenu();
+				teste = false;
 			}
 			else
 			{
