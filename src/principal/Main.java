@@ -2,7 +2,7 @@ package principal;
 
 import java.io.IOException;
 
-import Exceptions.Exceptions;
+import Exceptions.MyExceptions;
 import pessoal.Usuario;
 import utils.Menu;
 import utils.ValidaUsuario;

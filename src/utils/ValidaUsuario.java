@@ -75,6 +75,7 @@ public Usuario validaUsuario() throws ArithmeticException, IOException, Interrup
 			if (teste)
 			{
 				System.out.println("\nUsuario ou senha incorretos... \n\n");
+				System.out.println("\nVocê tem " + (2-i) + " tentativas. \n\n");
 				Thread.sleep(2000);
 				i++;
 				if (i>2)

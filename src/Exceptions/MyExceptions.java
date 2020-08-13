@@ -2,14 +2,14 @@ package Exceptions;
 
 import java.util.InputMismatchException;
 
-public class Exceptions extends InputMismatchException {
+public class MyExceptions extends InputMismatchException {
 	private static final long serialVersionUID = 1L;
 
-	public Exceptions() {
+	public MyExceptions() {
 		super();
 	}
 
-	public Exceptions(String e) throws InterruptedException {
+	public MyExceptions(String e) throws InterruptedException {
 		super(e);
 		Thread.sleep(2000);
 	}

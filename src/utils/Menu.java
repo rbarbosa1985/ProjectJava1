@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 import java.util.InputMismatchException;
-import Exceptions.Exceptions;
+import Exceptions.MyExceptions;
 import conta.ContaBase;
 import pessoal.Diretor;
 import pessoal.Gerente;
@@ -43,6 +43,7 @@ public class Menu {
 				
 		while (opcao != '7')
 		{
+			limpaMenu();
 			cabecalho();
 			System.out.println(":::::::::::::::::::::::::::::::::::::::::::: MENU DE MOVIMENTAÇOES BANCARIAS ::::::::::::::::::::::::::::::::::::::::::::::::::::::::: \n\n");
 			System.out.println("0 - Saldo");
@@ -74,7 +75,7 @@ public class Menu {
 						valor = input.nextDouble();
 						if (valor <= 0)
 						{
-							throw new Exceptions("O valor precisa ser maior que 0.");
+							throw new MyExceptions("O valor precisa ser maior que 0.");
 						}
 						else			
 						{
@@ -97,7 +98,7 @@ public class Menu {
 						}
 						continua = false;
 					}
-					catch (Exceptions e)
+					catch (MyExceptions e)
 					{
 						System.out.println("\nO Valor não pode ser menor ou igual a 0.");
 					}
@@ -106,21 +107,38 @@ public class Menu {
 			}
 			else if (opcao == '2')
 			{
-				double valor;
-				System.out.print("\nDigite o valor que deseja depositar: R$ ");
-				valor = input.nextDouble();
-				valor = Math.round(valor*100);
-				valor = valor/100;
-				cc.depositar(valor);
-				valortarifa += 0.1;
-				if (cc.getTipoDeConta().equalsIgnoreCase("Poupanca"))
+				double valor=0;
+				boolean continua = true;
+				do
 				{
-					Leitora.escritorDeposito(path, user, cc, valor, 0);
-				}
-				else
-				{
-					Leitora.escritorDeposito(path, user, cc, valor, 0.10);
-				}
+					try
+					{
+						System.out.print("\nDigite o valor que deseja depositar: R$ ");
+						valor = input.nextDouble();
+						if (valor <= 0)
+						{
+							throw new MyExceptions("O valor precisa ser maior que 0.");
+						}
+						else			
+						{
+							cc.depositar(valor);
+							valortarifa += 0.1;
+							if (cc.getTipoDeConta().equalsIgnoreCase("Poupanca"))
+							{
+								Leitora.escritorDeposito(path, user, cc, valor, 0);
+							}
+							else
+							{
+								Leitora.escritorDeposito(path, user, cc, valor, 0.10);
+							}
+						}
+						continua = false;
+					}
+					catch (MyExceptions e)
+					{
+						System.out.println("\nO Valor não pode ser menor ou igual a 0.");
+					}
+				}while(continua);
 				limpaMenu();
 			}
 			else if (opcao == '3')
@@ -128,53 +146,70 @@ public class Menu {
 				
 				double valor;
 				int numeroconta = 0;
-				
-				
-				System.out.print("\nDigite o numero da conta destino: ");
-				numeroconta = input.nextInt();
-				System.out.print("\nDigite o cpf do Titular da conta destino: ");
-				input.nextLine();
-				String cpf = input.nextLine();
-				cc1 = ValidaConta.validaConta(cpf);	
-				Usuario user1 = FindUser.find(cpf);
-				System.out.print("\nDigite o valor que deseja transferir: R$ ");
-				valor = input.nextDouble();
-				valor = Math.round(valor*100);
-				valor = valor/100;
-				
-				if ((numeroconta == cc1.getNumeroConta()) && (cpf.equalsIgnoreCase(cc1.getCpf())))
+				boolean continua = true;
+				do
 				{
-					System.out.println("\nDados do Favorecido:");
-					System.out.println("Nome: " + user1.getNome() + " CPF: " + user1.getCpf() + " Numero da Conta: " + cc1.getNumeroConta());
-					System.out.print("\nConfirma os dados da conta destino (s/n)? ");
-					char confirma = input.next().charAt(0);
-					if (confirma == 's')
+					try
 					{
-						if (cc.transfere(cc1, valor))
+				
+						System.out.print("\nDigite o numero da conta destino: ");
+						numeroconta = input.nextInt();
+						System.out.print("\nDigite o cpf do Titular da conta destino: ");
+						input.nextLine();
+						String cpf = input.nextLine();
+						cc1 = ValidaConta.validaConta(cpf);	
+						Usuario user1 = FindUser.find(cpf);
+						System.out.print("\nDigite o valor que deseja transferir: R$ ");
+						valor = input.nextDouble();
+						
+						if (valor <= 0)
 						{
-							valortarifa += 0.2;
+							throw new MyExceptions("O valor precisa ser maior que 0.");
 						}
-						if (cc.getTipoDeConta().equalsIgnoreCase("Poupanca"))
+						else			
 						{
-							Leitora.escritorTransferencia(path, user, cc, cc1, user1.getNome(), numeroconta, valor, 0);
+						
+							if ((numeroconta == cc1.getNumeroConta()) && (cpf.equalsIgnoreCase(cc1.getCpf())))
+							{
+								System.out.println("\nDados do Favorecido:");
+								System.out.println("Nome: " + user1.getNome() + " CPF: " + user1.getCpf() + " Numero da Conta: " + cc1.getNumeroConta());
+								System.out.print("\nConfirma os dados da conta destino (s/n)? ");
+								char confirma = input.next().charAt(0);
+								if (confirma == 's')
+								{
+									if (cc.transfere(cc1, valor))
+									{
+										valortarifa += 0.2;
+									}
+									if (cc.getTipoDeConta().equalsIgnoreCase("Poupanca"))
+									{
+										Leitora.escritorTransferencia(path, user, cc, cc1, user1.getNome(), numeroconta, valor, 0);
+									}
+									else
+									{
+										Leitora.escritorTransferencia(path, user, cc, cc1, user1.getNome(), numeroconta, valor, 0.20);
+									}
+									limpaMenu();
+								}
+								else
+								{
+									System.out.println("\nDados incorretos!");
+									limpaMenu();
+								}
+							}
+							else
+							{
+								System.out.println("\nDados incorretos!");
+								limpaMenu();
+							}
 						}
-						else
-						{
-							Leitora.escritorTransferencia(path, user, cc, cc1, user1.getNome(), numeroconta, valor, 0.20);
-						}
-						limpaMenu();
-					}
-					else
-					{
-						System.out.println("\nDados incorretos!");
-						limpaMenu();
-					}
+						continua = false;
 				}
-				else
+				catch (MyExceptions e)
 				{
-					System.out.println("\nDados incorretos!");
-					limpaMenu();
+					System.out.println("\nO Valor não pode ser menor ou igual a 0.");
 				}
+			}while(continua);
 				
 			}
 			else if (opcao == '4')
@@ -401,7 +436,7 @@ public class Menu {
 				opcao = sc.nextInt();
 				if (opcao >=4)
 				{
-					throw new Exceptions("\nSelecione a opção correta!\n");
+					throw new MyExceptions("\nSelecione a opção correta!\n");
 				}
 				limpaMenu();
 				continua = false;
