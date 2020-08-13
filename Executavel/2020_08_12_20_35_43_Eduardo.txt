@@ -1,0 +1,22 @@
+** COMPROVANTE DE TRANSAÇÃO BANCARIA - TRANSFERENCIA **
+
+Cliente: Eduardo
+Agencia: 3533 - Numero da Conta :2322 Conta: corrente
+====================================================
+================Tranferido para:====================
+
+Valor Total Transferido R$: 120.0
+Conta Destino: 2323
+Cliente: Cristopher CPF: 123456785
+
+====================================================
+
+O Saldo Atual da sua conta é: R$ 1899.60
+
+====================================================
+
+Tarifa desta operação foi R$: 0.2
+
+================ Fim do Comprovante =================
+======= OBRIGADO POR UTILIZAR NOSSOS SERVIÇOS========
+======== Pencent Bank Copyright © Copyright ® =======

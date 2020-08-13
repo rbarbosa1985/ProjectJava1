@@ -1,0 +1,16 @@
+**** COMPROVANTE DE TRANSAÇÃO BANCARIA - SAQUE ****
+
+Cliente: Eduardo
+Agencia: 3533 - Numero da Conta :2322 Conta: corrente
+====================================================
+Valor de saque realizado: R$ 100.0
+
+O Saldo Atual da sua conta é: R$ 1899.90
+
+====================================================
+
+Tarifa desta operação foi R$: 0.1
+
+================ Fim do Comprovante =================
+======= OBRIGADO POR UTILIZAR NOSSOS SERVIÇOS========
+======== Pencent Bank Copyright © Copyright ® =======
