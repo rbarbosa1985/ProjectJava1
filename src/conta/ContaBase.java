@@ -1,7 +1,5 @@
 package conta;
 
-import utils.Leitora;
-
 public abstract class ContaBase {
 		
 	static final int banco = 0401;

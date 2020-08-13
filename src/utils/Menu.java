@@ -3,6 +3,8 @@ package utils;
 import java.io.IOException;
 import java.util.Scanner;
 
+import java.util.InputMismatchException;
+import Exceptions.Exceptions;
 import conta.ContaBase;
 import pessoal.Diretor;
 import pessoal.Gerente;
@@ -11,8 +13,6 @@ import pessoal.Usuario;
 
 
 public class Menu {
- 	static Scanner sc = new Scanner(System.in);
- 	
  	
 	public static void cabecalho() 
 	{
@@ -27,14 +27,17 @@ public class Menu {
 		 System.out.println("888        8888888888 888    Y888   Y8888P   8888888888 888    Y888     888           8888888P   d88P     888 888    Y888 888    Y88b ");
 		 System.out.println("######################################################################################################################################\n\n");
 	}
-	
-	public static void menuBancario(Usuario user) throws IOException, InterruptedException 
+		
+	public boolean menuBancario(Usuario user) throws ArithmeticException, IOException, InterruptedException  
 	{
 		ContaBase cc;
 		ContaBase cc1;
 		double valortarifa = 0.0;
+		boolean retorno = true;
+	    Scanner input = new Scanner(System.in);
+
 		
-		String path = "C:\\Projetos\\springtool\\Pencet\\";
+		String path = "./";
 		char opcao = '0';
 		cc = ValidaConta.validaConta(user.getCpf());
 				
@@ -45,13 +48,14 @@ public class Menu {
 			System.out.println("0 - Saldo");
 			System.out.println("1 - Saque");
 			System.out.println("2 - Deposito");
-			System.out.println("3 - Tranferencia");
+			System.out.println("3 - Transferencia");
 			System.out.println("4 - Relatorio de Tributação da Conta Corrente");
 			System.out.println("5 - Relatório de Rendimento da Conta Poupança");
 			System.out.println("6 - Desconectar-se");
 			System.out.println("7 - Fechar programa");
 			System.out.print("\nDigite uma opção de acordo com o indice: ");
-			opcao = sc.next().charAt(0);
+			
+			opcao = input.next().charAt(0);
 			if (opcao == '0')
 			{
 				System.out.printf("\nSeu Saldo atual é: R$ %.2f\n", cc.getSaldo());
@@ -60,29 +64,53 @@ public class Menu {
 			}
 			else if (opcao == '1')
 			{
-				double valor;
-				System.out.print("\nDigite o valor que deseja sacar: R$ ");
-				valor = sc.nextDouble();				
-				if (cc.sacar(valor))
+				double valor=0;
+				boolean continua = true;
+				do
 				{
-					valortarifa += 0.1;
-					if (cc.getTipoDeConta().equalsIgnoreCase("Poupanca"))
+					try
 					{
-						Leitora.escritorSaque(path, user, cc, valor, 0);
+						System.out.print("\nDigite o valor que deseja sacar: R$ ");
+						valor = input.nextDouble();
+						if (valor <= 0)
+						{
+							throw new Exceptions("O valor precisa ser maior que 0.");
+						}
+						else			
+						{
+							if (cc.sacar(valor))
+							{
+								valortarifa += 0.1;
+								if (cc.getTipoDeConta().equalsIgnoreCase("Poupanca"))
+								{
+									Leitora.escritorSaque(path, user, cc, valor, 0);
+								}
+								else
+								{
+									Leitora.escritorSaque(path, user, cc, valor, 0.10);
+								}
+								System.out.println("\nContando as cedulas...");
+								Thread.sleep(2000);
+								System.out.println("\nSaque realizado com sucesso!");
+								
+							}
+						}
+						continua = false;
 					}
-					else
+					catch (Exceptions e)
 					{
-						Leitora.escritorSaque(path, user, cc, valor, 0.1);
+						System.out.println("\nO Valor não pode ser menor ou igual a 0.");
 					}
-					System.out.println("\nSaque realizado com sucesso!");
-				}
+				}while(continua);
 				limpaMenu();
 			}
 			else if (opcao == '2')
 			{
 				double valor;
 				System.out.print("\nDigite o valor que deseja depositar: R$ ");
-				valor = sc.nextDouble();
+				valor = input.nextDouble();
+				valor = Math.round(valor*100);
+				valor = valor/100;
 				cc.depositar(valor);
 				valortarifa += 0.1;
 				if (cc.getTipoDeConta().equalsIgnoreCase("Poupanca"))
@@ -91,7 +119,7 @@ public class Menu {
 				}
 				else
 				{
-					Leitora.escritorDeposito(path, user, cc, valor, 0.1);
+					Leitora.escritorDeposito(path, user, cc, valor, 0.10);
 				}
 				limpaMenu();
 			}
@@ -103,21 +131,23 @@ public class Menu {
 				
 				
 				System.out.print("\nDigite o numero da conta destino: ");
-				numeroconta = sc.nextInt();
+				numeroconta = input.nextInt();
 				System.out.print("\nDigite o cpf do Titular da conta destino: ");
-				sc.nextLine();
-				String cpf = sc.nextLine();
+				input.nextLine();
+				String cpf = input.nextLine();
 				cc1 = ValidaConta.validaConta(cpf);	
 				Usuario user1 = FindUser.find(cpf);
 				System.out.print("\nDigite o valor que deseja transferir: R$ ");
-				valor = sc.nextDouble();
+				valor = input.nextDouble();
+				valor = Math.round(valor*100);
+				valor = valor/100;
 				
 				if ((numeroconta == cc1.getNumeroConta()) && (cpf.equalsIgnoreCase(cc1.getCpf())))
 				{
 					System.out.println("\nDados do Favorecido:");
 					System.out.println("Nome: " + user1.getNome() + " CPF: " + user1.getCpf() + " Numero da Conta: " + cc1.getNumeroConta());
 					System.out.print("\nConfirma os dados da conta destino (s/n)? ");
-					char confirma = sc.next().charAt(0);
+					char confirma = input.next().charAt(0);
 					if (confirma == 's')
 					{
 						if (cc.transfere(cc1, valor))
@@ -130,7 +160,7 @@ public class Menu {
 						}
 						else
 						{
-							Leitora.escritorTransferencia(path, user, cc, cc1, user1.getNome(), numeroconta, valor, 0.2);
+							Leitora.escritorTransferencia(path, user, cc, cc1, user1.getNome(), numeroconta, valor, 0.20);
 						}
 						limpaMenu();
 					}
@@ -174,10 +204,12 @@ public class Menu {
 				else 
 				{
 					System.out.print("\nDigite o Valor que pretende simular: ");
-					valor = sc.nextDouble();
+					valor = input.nextDouble();
 					System.out.print("\nDigite a quantidade de dias que pretende simular: ");
-					dias = sc.nextInt();
+					dias = input.nextInt();
 					valor = (valor * ((0.10/30)*dias));
+					valor = Math.round(valor*100);
+					valor = valor/100;
 					System.out.printf("\nO valor total do rendimento é: R$ %.2f ", valor);
 					limpaMenu();
 				}
@@ -189,23 +221,28 @@ public class Menu {
 			{
 				System.out.println("\nEfetuando o Logout!");
 				limpaMenu();
-				ValidaUsuario.validaUsuario();
+				opcao = '7';
+				retorno = true;
 			}
 			else if (opcao == '7')
 			{
 				System.out.println("\nSaindo do Sistema!");
 				limpaMenu();
+				retorno = false;
 			}
 			else
 			{
-				System.out.println("Opção incorreta!");
+				System.out.println("\nOpção incorreta!");
 			}
 	}
+	return retorno;
 }
 	
-	public static void menuGerente(Usuario user) throws IOException, InterruptedException
+	public boolean menuGerente(Usuario user) throws IOException, InterruptedException
 	{	
+		Scanner sc = new Scanner(System.in);
 		char opcao = '9';
+		boolean retorno = true;
 		while(opcao != '2')
 		{
 			cabecalho();
@@ -213,14 +250,13 @@ public class Menu {
 			System.out.println("0 - Imprimir o relatorio Numero de Contas da Agencia: ");
 			System.out.println("1 - Desconectar-se");
 			System.out.println("2 - Fechar Programa");
-			System.out.print("Digite uma opção de acordo com o indice: ");
+			System.out.print("\nDigite uma opção de acordo com o indice: ");
 			opcao = sc.next().charAt(0);
 				
 			if (opcao == '0')
 			{			
-				System.out.println("Quantidade de contas na sua Agencia é: " + ((Gerente)user).qtdContas());
+				System.out.println("\nQuantidade de contas na sua Agencia é: " + ((Gerente)user).qtdContas());
 				System.out.println("\nDigite o Enter para continuar... ");
-				sc.nextLine();
 				sc.nextLine();
 				limpaMenu();
 			}
@@ -228,23 +264,29 @@ public class Menu {
 			{
 				System.out.print("\nEfetuando Logout");
 				limpaMenu();
-				ValidaUsuario.validaUsuario();
+				opcao = '2';
+				retorno = true;
 			}
 			else if (opcao == '2')
 			{
-				Thread.sleep(1000);
+				System.out.println("\nSaindo do Sistema!");
+				limpaMenu();
+				retorno = false;
 			}
 			else
 			{
-				System.out.println("Opção Incorreta!");
+				System.out.println("\nOpção Incorreta!");
 				limpaMenu();
 			}
 		}
+		return retorno;
 	}
 	
-	public static void menuDiretor(Usuario user) throws IOException, InterruptedException
+	public boolean menuDiretor(Usuario user) throws IOException, InterruptedException
 	{
+		Scanner sc = new Scanner(System.in);
 		char opcao = '9';
+		boolean retorno = true;
 		while (opcao != '2')
 		{
 			cabecalho();
@@ -252,15 +294,15 @@ public class Menu {
 			System.out.println("0 - Imprimir o relatorio Nome, CPF e Agencia de todos os Cliente: ");
 			System.out.println("1 - Desconectar-se");
 			System.out.println("2 - Fechar Programa");
-			System.out.print("Digite uma opção de acordo com o indice: ");
+			System.out.print("\nDigite uma opção de acordo com o indice: ");
 			opcao = sc.next().charAt(0);
 			
 			if (opcao == '0')
 			{			
-				System.out.println("Segue abaixo o Relatorio com os clientes:");
+				System.out.println("\nSegue abaixo o Relatorio com os clientes: ");
 				((Diretor)user).consultaContas();
 				System.out.println("\nDigite o Enter para continuar... ");
-				String pausa = sc.nextLine();
+				sc.nextLine();
 				limpaMenu();
 			}
 			
@@ -268,24 +310,29 @@ public class Menu {
 			{
 				System.out.print("\nEfetuando Logout");
 				limpaMenu();
-				ValidaUsuario.validaUsuario();
+				opcao = '2';
+				retorno = true;
 			}
 			else if (opcao == '2')
 			{
-				Thread.sleep(1000);
+				System.out.println("\nSaindo do Sistema!");
 				limpaMenu();
+				retorno = false;
 			}
 			else
 			{
-				System.out.println("Opção Incorreta!");
+				System.out.println("\nOpção Incorreta!");
 				limpaMenu();
 			}
 		}
+		return retorno;
 	}
 	
-	public static void menuPresidente(Usuario user) throws IOException, InterruptedException
+	public boolean menuPresidente(Usuario user) throws IOException, InterruptedException
 	{
+		Scanner sc = new Scanner(System.in);
 		char opcao = '9';
+		boolean retorno = true;
 		while (opcao != '2')
 		{
 			cabecalho();
@@ -293,36 +340,40 @@ public class Menu {
 			System.out.println("0 - Imprimir o relatório Valor Total Capital no Banco: ");
 			System.out.println("1 - Desconectar-se");
 			System.out.println("2 - Fechar Programa");
-			System.out.print("Digite uma opção de acordo com o indice: ");
+			System.out.print("\nDigite uma opção de acordo com o indice: ");
 			opcao = sc.next().charAt(0);
 			
 			if (opcao == '0')
 			{
-				System.out.println("Quantidade de contas na sua Agencia é: " + ((Presidente)user).capital());
+				System.out.println("\nO valor total de capital do Banco Pencent é: R$ " + ((Presidente)user).capital());
 				System.out.println("\nDigite o Enter para continuar... ");
-				String pausa = sc.nextLine();
+				sc.nextLine();
 				limpaMenu();
 			}
 			else if (opcao == '1')
 			{
 				System.out.print("\nEfetuando Logout");
 				limpaMenu();
-				ValidaUsuario.validaUsuario();
+				opcao = '2';
+				retorno = true;
 			}
 			else if (opcao == '2')
 			{
-				Thread.sleep(1000);
+				System.out.println("\nSaindo do Sistema!");
+				limpaMenu();
+				retorno = false;
 			}
 			else
 			{
-				System.out.println("Opção Incorreta!");
+				System.out.println("\nOpção Incorreta!");
 				limpaMenu();
 			}
 		}
+		return retorno;
 	}
 	
 	public static void limpaMenu() throws IOException, InterruptedException {
-		Thread.sleep(2000);
+		Thread.sleep(1000);
 		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
         if (System.getProperty("os.name").contains("Windows"))
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -330,71 +381,41 @@ public class Menu {
             Runtime.getRuntime().exec("clear");
 	}
 	
-	public static void menuNivelAcesso(Usuario user) throws IOException, InterruptedException
+	public int menuNivelAcesso(Usuario user) throws IOException, InterruptedException, InputMismatchException  
 	{
-		char opcao = '9';
-		boolean teste = true;
-		while (teste)
+		Scanner sc = new Scanner(System.in);
+		int opcao = '9';
+		boolean continua=true;
+		do
 		{
-			cabecalho();
-			System.out.println("::::::::::::::::::::::::::::::::::::::::::: MENU DE NIVEL DE ACESSO - " + user.getCategoria().toUpperCase() + " :::::::::::::::::::::::::::::::::::: \n\n");
-			System.out.println("0 - Acesso Conta Pessoal");
-			System.out.println("1 - Acesso Sistema Banco Pencet");
-			System.out.println("2 - Desconectar-se");
-			System.out.println("3 - Fechar Programa");
-			System.out.print("Digite uma opção de acordo com o indice: ");
-			opcao = sc.next().charAt(0);
-			if (opcao == '0')
+			try
 			{
-				menuBancario(user);
-				teste = false;
 				limpaMenu();
-			}
-			else if (opcao == '1')
-			{
-				if (user.getCategoria().equals("Gerente"))
+				cabecalho();
+				System.out.println("::::::::::::::::::::::::::::::::::::::::::: MENU DE NIVEL DE ACESSO - " + user.getCategoria().toUpperCase() + " :::::::::::::::::::::::::::::::::::: \n\n");
+				System.out.println("0 - Acesso Conta Pessoal");
+				System.out.println("1 - Acesso Sistema Banco Pencent");
+				System.out.println("2 - Desconectar-se");
+				System.out.println("3 - Fechar Programa");
+				System.out.print("\nDigite uma opção de acordo com o indice: ");
+				opcao = sc.nextInt();
+				if (opcao >=4)
 				{
-					menuGerente(user);
-					teste = false;
-					limpaMenu();
+					throw new Exceptions("\nSelecione a opção correta!\n");
 				}
-				if (user.getCategoria().equals("Diretor"))
-				{
-					menuDiretor(user);
-					teste = false;
-					limpaMenu();
-				}
-				if (user.getCategoria().equals("Presidente"))
-				{
-					menuPresidente(user);
-					teste = false;
-					limpaMenu();
-				}
-			}
-			else if (opcao == '2')
-			{
-				System.out.print("\nEfetuando Logout");
-				ValidaUsuario.validaUsuario();
 				limpaMenu();
-				teste = false;
+				continua = false;
 			}
-			else if (opcao == '3')
+			catch (InputMismatchException e)
 			{
-				System.out.print("\nSaindo do Sistema.");
-				limpaMenu();
-				teste = false;
+				System.out.println("\nDigite apenas numeros de acordo com o indice!\n");
+				Thread.sleep(2000);
+				sc.nextLine();
 			}
-			else
-			{
-				System.out.print("\nOpção digitada incorreta");
-				limpaMenu();
-			}
-		}
+		}while(continua);
+		return opcao;
 	}
 	
 }
-
-
-
 
 

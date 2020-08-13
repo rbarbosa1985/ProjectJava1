@@ -30,7 +30,7 @@ public class Diretor extends Funcionario {
 		
 		for (Usuario user : usuarios)
 		{
-			System.out.println("Nome do Cliente: " + user.getNome() + " CPF: " + user.getCpf() + " Numero da Conta: " + user.getAgencia());
+			System.out.println("\nNome do Cliente: " + user.getNome() + " | CPF: " + user.getCpf() + " | Numero da Conta: " + user.getAgencia());
 		}
 	}
 	

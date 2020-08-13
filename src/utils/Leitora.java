@@ -5,6 +5,8 @@ import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -127,18 +129,20 @@ path = path + simpleDateFormat.format(data) + p.getNome() + ".txt";
         buffWrite.append(linha + "\n");
         linha="====================================================";
         buffWrite.append(linha + "\n\n");
-        linha = "O Saldo da sua conta é: R$ "+((ContaBase)c).getSaldo();
+        BigDecimal bd = new BigDecimal(((ContaBase)c).getSaldo()).setScale(2, RoundingMode.HALF_EVEN);
+        linha = "O Saldo da sua conta é: R$ "+bd;
         buffWrite.append(linha + "\n\n");
     }
    
-    if(p.getCategoria().equals(UsuarioEnum.GERENTE.name())){
+    if(p.getCategoria().equalsIgnoreCase(UsuarioEnum.GERENTE.name())){
     linha = "Cliente: "+((Gerente)p).getNome();
     buffWrite.append(linha + "\n");
     linha = "Agencia: "+((Gerente)p).getAgencia() + " - Numero da Conta :" + ((ContaBase)c).getNumeroConta() +" Conta: " +((ContaBase)c).getTipoDeConta();
         buffWrite.append(linha + "\n");
         linha="====================================================";
         buffWrite.append(linha + "\n\n");
-        linha = "O Saldo da sua conta é: R$ "+((ContaBase)c).getSaldo();
+        BigDecimal bd = new BigDecimal(((ContaBase)c).getSaldo()).setScale(2, RoundingMode.HALF_EVEN);
+        linha = "O Saldo da sua conta é: R$ "+bd;
         buffWrite.append(linha + "\n\n");
     }
    
@@ -176,14 +180,15 @@ path = path + simpleDateFormat.format(data) + p.getNome() + ".txt";
         buffWrite.append(linha + "\n");
         linha = "Valor de saque realizado: R$ "+ valor;
         buffWrite.append(linha + "\n\n");
-        linha = "O Saldo Atual da sua conta é: R$ "+((ContaBase)c).getSaldo();
+        BigDecimal bd = new BigDecimal(((ContaBase)c).getSaldo()).setScale(2, RoundingMode.HALF_EVEN);
+        linha = "O Saldo Atual da sua conta é: R$ "+bd;
         buffWrite.append(linha + "\n\n");
         linha="====================================================";
         buffWrite.append(linha + "\n\n");
         linha = "Tarifa desta operação foi R$: " + valortarifa;
         buffWrite.append(linha + "\n\n");
     }
-    if(p.getCategoria().equals(UsuarioEnum.GERENTE.name())){
+    if(p.getCategoria().equalsIgnoreCase(UsuarioEnum.GERENTE.name())){
     linha = "Cliente: "+((Gerente)p).getNome();
     buffWrite.append(linha + "\n");
     linha = "Agencia: "+((Gerente)p).getAgencia() + " - Numero da Conta :" + ((ContaBase)c).getNumeroConta() +" Conta: " +((ContaBase)c).getTipoDeConta();
@@ -192,7 +197,8 @@ path = path + simpleDateFormat.format(data) + p.getNome() + ".txt";
         buffWrite.append(linha + "\n\n");
         linha = "Valor de saque realizado: R$ "+ valor;
         buffWrite.append(linha + "\n\n");
-        linha = "O Saldo Atual da sua conta é: R$ "+((ContaBase)c).getSaldo();
+        BigDecimal bd = new BigDecimal(((ContaBase)c).getSaldo()).setScale(2, RoundingMode.HALF_EVEN);
+        linha = "O Saldo Atual da sua conta é: R$ "+bd;
         buffWrite.append(linha + "\n\n");
         linha="====================================================";
         buffWrite.append(linha + "\n\n");
@@ -234,14 +240,15 @@ path = path + simpleDateFormat.format(data) + p.getNome() + ".txt";
         buffWrite.append(linha + "\n\n");
         linha = "Valor depositado foi de: R$ "+ valor;
         buffWrite.append(linha + "\n\n");
-        linha = "O Saldo Atual da sua conta é: R$ "+((ContaBase)c).getSaldo();
+        BigDecimal bd = new BigDecimal(((ContaBase)c).getSaldo()).setScale(2, RoundingMode.HALF_EVEN);
+        linha = "O Saldo Atual da sua conta é: R$ "+bd;
         buffWrite.append(linha + "\n\n");
         linha="====================================================";
         buffWrite.append(linha + "\n\n");
         linha = "Tarifa desta operação foi R$: " + valortarifa;
         buffWrite.append(linha + "\n\n");
     }
-    if(p.getCategoria().equals(UsuarioEnum.GERENTE.name())){
+    if(p.getCategoria().equalsIgnoreCase(UsuarioEnum.GERENTE.name())){
     linha = "Cliente: "+((Gerente)p).getNome();
     buffWrite.append(linha + "\n");
     linha = "Agencia: "+((Gerente)p).getAgencia() + " - Numero da Conta :" + ((ContaBase)c).getNumeroConta() +" Conta: " +((ContaBase)c).getTipoDeConta();
@@ -250,7 +257,8 @@ path = path + simpleDateFormat.format(data) + p.getNome() + ".txt";
         buffWrite.append(linha + "\n\n");
         linha = "Valor depositado foi de: R$ "+ valor;
         buffWrite.append(linha + "\n\n");
-        linha = "O Saldo Atual da sua conta é: R$ "+((ContaBase)c).getSaldo();
+        BigDecimal bd = new BigDecimal(((ContaBase)c).getSaldo()).setScale(2, RoundingMode.HALF_EVEN);
+        linha = "O Saldo Atual da sua conta é: R$ "+bd;
         buffWrite.append(linha + "\n\n");
         linha="====================================================";
         buffWrite.append(linha + "\n\n");
@@ -300,14 +308,15 @@ path = path + simpleDateFormat.format(data) + p.getNome() + ".txt";
         buffWrite.append(linha + "\n\n");
         linha="====================================================";
         buffWrite.append(linha + "\n\n");
-        linha = "O Saldo atual da sua conta R$ "+((ContaBase)c).getSaldo();
+        BigDecimal bd = new BigDecimal(((ContaBase)c).getSaldo()).setScale(2, RoundingMode.HALF_EVEN);
+        linha = "O Saldo Atual da sua conta é: R$ "+bd;
         buffWrite.append(linha + "\n\n");
         linha="====================================================";
         buffWrite.append(linha + "\n\n");
         linha = "Tarifa desta operação foi R$: " + valortarifa;
         buffWrite.append(linha + "\n\n");
     }
-    if(p.getCategoria().equals(UsuarioEnum.GERENTE.name())){
+    if(p.getCategoria().equalsIgnoreCase(UsuarioEnum.GERENTE.name())){
     linha = "Cliente: "+((Gerente)p).getNome();
     buffWrite.append(linha + "\n");
     linha = "Agencia: "+((Gerente)p).getAgencia() + " - Numero da Conta :" + ((ContaBase)c).getNumeroConta() +" Conta: " +((ContaBase)c).getTipoDeConta();
@@ -324,7 +333,8 @@ path = path + simpleDateFormat.format(data) + p.getNome() + ".txt";
         buffWrite.append(linha + "\n\n");
         linha="====================================================";
         buffWrite.append(linha + "\n\n");
-        linha = "O Saldo atual da sua conta R$ "+((ContaBase)c).getSaldo();
+        BigDecimal bd = new BigDecimal(((ContaBase)c).getSaldo()).setScale(2, RoundingMode.HALF_EVEN);
+        linha = "O Saldo Atual da sua conta é: R$ "+bd;
         buffWrite.append(linha + "\n\n");
         linha="====================================================";
         buffWrite.append(linha + "\n\n");
